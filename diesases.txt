@@ -1,0 +1,7 @@
+    "atopic_dermatitis":  "atopic+dermatitis",
+    "ulcerative_colitis": "ulcerative+colitis",
+    "focal_epilepsy":     "focal+epilepsy",
+    "colorectal_cancer":  "colorectal+cancer",
+    "lymphoma":           "lymphoma",
+    "melanoma":           "melanoma",
+    "aortic_aneurysm":    "aortic+aneurysm",
