@@ -27,6 +27,7 @@ pip install pandas
 ## !!!!
 Also needed: **ChEMBL 37 as SQLite**. Stage 01 has the path hardcoded near the top —
 edit it to match your machine:
+## !!!!
 
 ```python
 CHEMBL_DB = Path(".../chembl_37_sqlite/chembl_37.db")
