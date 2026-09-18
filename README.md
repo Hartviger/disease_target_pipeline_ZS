@@ -41,7 +41,7 @@ CHEMBL_DB = Path(".../chembl_37_sqlite/chembl_37.db")
 |---|---|
 | `9606.protein.aliases.v12.5.txt.gz` | [STRING downloads](https://string-db.org/cgi/download), taxon 9606 |
 | `9606.protein.info.v12.5.txt.gz` | same |
-| `enrichment_and_clustering.cys` | Local Cytoscape session, one network per disease — not publicly available, keep your own backup |
+| `enrichment_and_clustering.cys` | Local Cytoscape session, https://zenodo.org/records/19134020 |
 
 Network names inside the `.cys` must match `NETWORK_NAMES` in stage 02.
 
