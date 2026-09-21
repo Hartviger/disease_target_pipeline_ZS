@@ -55,7 +55,7 @@ WRITE_ID_REVIEW = True
 RUN_CHEMBL_ANALYSIS = True
 
 # 4 = approved drugs only. 1 includes drugs from phase 1 and above.
-MINIMUM_PHASE = 4
+MINIMUM_PHASE = 3
 
 # 9606 = Homo sapiens / human.
 HUMAN_TAX_ID = 9606

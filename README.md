@@ -14,11 +14,12 @@ Run in order. Each stage reads the previous stage's output.
 | `00_summon_the_mondos.py` | Resolves a disease name to a MONDO/EFO term via OLS and collects its descendant terms | `disease_scopes/` |
 | `01_hunt_the_chembl_targets.py` | Finds approved drugs indicated for those terms, and their human protein targets | `results/01_chembl_targets/` |
 | `02_map_targets_to_the_network.py` | Maps UniProt → STRING and checks membership in the disease network | `results/02_network_comparisons/` |
+| `03_summarize_the_chembl_targets.py` | Counts each ChEMBL target once and preserves its component and source-row provenance | `results/03_chembl_target_summary/` |
 
 ## Setup
 
 ```bash
-pip install pandas
+pip install pandas openpyxl
 ```
 ## !!!!
 Also needed: **ChEMBL 37 as SQLite**. Stage 01 has the path hardcoded near the top —
@@ -46,4 +47,5 @@ Network names inside the `.cys` must match `NETWORK_NAMES` in stage 02.
 python3 00_summon_the_mondos.py                          # diseases listed inside the script
 python3 01_hunt_the_chembl_targets.py                    # every scope file
 python3 02_map_targets_to_the_network.py focal_epilepsy   # or just one disease
+python3 03_summarize_the_chembl_targets.py                # target-level summaries
 ```
