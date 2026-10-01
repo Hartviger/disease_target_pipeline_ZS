@@ -16,9 +16,9 @@ Output:
 - results/03_chembl_target_summary/Unique ChEMBL targets.csv
 - results/03_chembl_target_summary/UniProt components.csv
 - results/03_chembl_target_summary/chembl_target_summary.xlsx
-
+  
 Run:  python3 03_summarize_the_chembl_targets.py
-"""
+""" 
 
 import ast
 from pathlib import Path
@@ -248,6 +248,7 @@ def load_component_rows():
 
     required_columns = {
         "uniprot",
+        "gene",
         "ontology_ids",
         "chembl_target_id",
         "chembl_target",
@@ -312,6 +313,7 @@ def build_targets_by_disease(components):
             "disease": disease_label(disease),
             "disease_key": disease,
             "chembl_target_id": target_id,
+            "gene": "; ".join(collect_semicolon_values(group["gene"])),
             "target_network_status": network["target_network_status"],
             "uniprot_components_in_network": network[
                 "uniprot_components_in_network"
@@ -398,6 +400,7 @@ def prepare_output_tables(targets_by_disease, components):
     target_output = targets_by_disease[[
         "disease",
         "chembl_target_id",
+        "gene",
         "target_network_status",
         "uniprot_components_in_network",
         "uniprot_components",
@@ -417,6 +420,7 @@ def prepare_output_tables(targets_by_disease, components):
     ]].rename(columns={
         "disease": "Disease",
         "chembl_target_id": "ChEMBL target ID",
+        "gene": "Gene",
         "target_network_status": "Target network status",
         "uniprot_components_in_network": "UniProt components in network",
         "network_levels": "Network levels",
@@ -449,6 +453,7 @@ def prepare_output_tables(targets_by_disease, components):
     source_output = source_output[[
         "disease",
         "uniprot",
+        "gene",
         "target_network_status",
         "Network level",
         "chembl_target_id",
@@ -465,6 +470,7 @@ def prepare_output_tables(targets_by_disease, components):
     ]].rename(columns={
         "disease": "Disease",
         "uniprot": "UniProt ID",
+        "gene": "Gene",
         "target_network_status": "Target network status",
         "ontology_ids": "Ontology IDs",
         "chembl_target_id": "ChEMBL target ID",
@@ -644,8 +650,8 @@ def write_excel_workbook(
         target_sheet = workbook["Unique ChEMBL targets"]
         style_data_sheet(
             target_sheet,
-            [22, 18, 28, 38, 46, 20, 34, 24, 14, 16, 18, 18, 11, 17, 46, 38, 52, 18],
-            "C2",
+            [22, 18, 30, 28, 38, 46, 20, 34, 24, 14, 16, 18, 18, 11, 17, 46, 38, 52, 18],
+            "D2",
             "TargetsByDiseaseTable",
         )
         status_styles = {
@@ -655,20 +661,20 @@ def write_excel_workbook(
             "not mapped to STRING": ("D9EAF7", "1F4E78"),
         }
         for row_number in range(2, target_sheet.max_row + 1):
-            status_cell = target_sheet.cell(row_number, 3)
+            status_cell = target_sheet.cell(row_number, 4)
             colors = status_styles.get(status_cell.value)
             if colors:
                 status_cell.fill = PatternFill("solid", fgColor=colors[0])
                 status_cell.font = Font(name="Arial", size=10, color=colors[1])
         style_data_sheet(
             workbook["UniProt components"],
-            [22, 15, 28, 20, 18, 38, 24, 20, 18, 11, 12, 52, 38, 52, 12],
-            "D2",
+            [22, 15, 14, 28, 20, 18, 38, 24, 20, 18, 11, 12, 52, 38, 52, 12],
+            "E2",
             "SourceComponentsTable",
         )
         component_sheet = workbook["UniProt components"]
         for row_number in range(2, component_sheet.max_row + 1):
-            status_cell = component_sheet.cell(row_number, 3)
+            status_cell = component_sheet.cell(row_number, 4)
             colors = status_styles.get(status_cell.value)
             if colors:
                 status_cell.fill = PatternFill("solid", fgColor=colors[0])

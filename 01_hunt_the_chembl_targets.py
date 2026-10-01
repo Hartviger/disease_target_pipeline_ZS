@@ -55,7 +55,7 @@ WRITE_ID_REVIEW = True
 RUN_CHEMBL_ANALYSIS = True
 
 # 4 = approved drugs only. 1 includes drugs from phase 1 and above.
-MINIMUM_PHASE = 3
+MINIMUM_PHASE = 4
 
 # 9606 = Homo sapiens / human.
 HUMAN_TAX_ID = 9606
@@ -271,7 +271,8 @@ def analyze_disease(loaded_scope):
                     target_dictionary.target_type       AS chembl_target_type,
                     drug_mechanism.action_type          AS action,
                     component_sequences.tax_id          AS target_tax_id,
-                    component_sequences.accession       AS uniprot
+                    component_sequences.accession       AS uniprot,
+                    component_synonyms.component_synonym AS gene
     FROM drug_indication
     JOIN molecule_dictionary
         ON drug_indication.molregno = molecule_dictionary.molregno
@@ -283,6 +284,9 @@ def analyze_disease(loaded_scope):
         ON target_dictionary.tid = target_components.tid
     JOIN component_sequences
         ON target_components.component_id = component_sequences.component_id
+    LEFT JOIN component_synonyms
+        ON component_sequences.component_id = component_synonyms.component_id
+       AND component_synonyms.syn_type = 'GENE_SYMBOL'
     WHERE drug_indication.efo_id IN ({sql_placeholders(ontology_ids)})
       AND drug_indication.max_phase_for_ind >= ?
       AND component_sequences.accession IS NOT NULL
@@ -318,6 +322,7 @@ def analyze_disease(loaded_scope):
         .groupby(["uniprot", "chembl_target_id"])
         .agg(
             ontology_ids=("ontology_id", join_unique),
+            gene=("gene", join_unique),
             chembl_target=("chembl_target", join_unique),
             chembl_target_type=("chembl_target_type", join_unique),
             target_component_count=("target_component_count", "max"),

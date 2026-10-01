@@ -175,6 +175,7 @@ def compare_disease(disease, uniprot_to_string):
     targets = pd.read_csv(CHEMBL_TARGETS_DIR / f"chembl_targets_{disease}.csv")
     required_columns = {
         "uniprot",
+        "gene",
         "ontology_ids",
         "chembl_target_id",
         "chembl_target",
@@ -206,6 +207,7 @@ def compare_disease(disease, uniprot_to_string):
 
     comparison = pd.DataFrame({
         "uniprot": targets["uniprot"],
+        "gene": targets["gene"],
         "ontology_ids": targets["ontology_ids"],
         "chembl_target_id": targets["chembl_target_id"],
         "chembl_target": targets["chembl_target"],
